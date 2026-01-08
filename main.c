@@ -26,16 +26,40 @@ void delay(volatile unsigned int count) {
     }
 }
 
-void task0(void) {
+void task0(void) 
+{
     for(int i = 0; i < 100000; i++)
     {
         uart_print_dec(i);
+        uart_print(" ");
+        if (i % 100 == 0) 
+        {
+            os_delay(1);
+        }
+    }
+    while(1) 
+    {
+        uart_print("[Task0] Done!\r\n");
+        os_delay(100);
     }
 }
-void task1(void) {
+
+void task1(void) 
+{
     for(int i = 100000; i > 0; i--)
     {
         uart_print_dec(i);
+        uart_print(" ");
+        if (i % 100 == 0) 
+        {
+            os_delay(1);
+        }
+    }
+    
+    while(1) 
+    {
+        uart_print("[Task1] Done!\r\n");
+        os_delay(100);
     }
 }
 /* --- MAIN --- */
@@ -70,7 +94,7 @@ void main(void) {
     //process_admit_jobs();
     process_create(task0, 1, 3, NULL);
     process_create(task1, 2, 4, NULL);
-
+    process_create(test_mpu_fault, 3, 6, NULL);
     /* Khởi động nhịp tim hệ thống */
     systick_init(SYSTICK_RATE); // kích hoạt hệ thống 
 
